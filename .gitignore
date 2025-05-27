@@ -172,3 +172,7 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+## Metropolitan Specific
+# Ignore startup scripts
+startup.sh
