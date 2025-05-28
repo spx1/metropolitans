@@ -1,4 +1,4 @@
-from .metropolitan import db
+from .app import db
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import mapped_column, relationship
 
