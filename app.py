@@ -25,3 +25,11 @@ def status():
 @app.route("/page/main")
 def display_main_page():
     return render_template('main.html')
+
+@app.route("/page/vendor")
+def display_vendor_page():
+    return render_template('vendors.html')
+
+@app.route("/page/expense")
+def display_expense_page():
+    return render_template('expenses.html')
