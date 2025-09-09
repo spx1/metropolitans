@@ -11,10 +11,10 @@
         <div class="header-content">
             <h1>Expense Tracker</h1>
             <div class="hamburger-menu">
-                <input type="checkbox" id="menu-toggle" />
                 <label for="menu-toggle" class="menu-icon">&#9776;</label>
+                <input type="checkbox" id="menu-toggle" />
                 <nav>
-                    <ul>
+                    <ul class="nav-menu" id="nav-menu">
                         <li><a href="{{ url_for('display_main_page') }}">Main</a></li>
                         <li><a href="{{ url_for('display_vendor_page') }}">Vendor</a></li>
                         <li><a href="{{ url_for('display_expense_page') }}">Expense</a></li>

@@ -20,11 +20,9 @@ body {
 }
 
 nav {
-    display: block;
+    display: none;
     position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
+    right: 0;
     background-color: #333;
 }
 
@@ -61,7 +59,12 @@ footer {
     color: #fff;
 }
 
+/* Do not show the checkbox */
+#menu-toggle {
+    display: none;
+}
+
 /* Show the nav menu when the checkbox is checked */
-#menu-toggle:checked + nav {
-    display: block !important;
+#menu-toggle:checked + nav  {
+    display: block;
 }
