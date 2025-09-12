@@ -1,14 +1,12 @@
-from typing import TypedDict
+from typing import TypedDict, Required
 from datetime import datetime as dt
 
-class IVendor(TypedDict):
+class IVendor(TypedDict, total=False):
     id : int
-    vendorname : str
+    vendorname : Required[str]
     contactname : str
     contactphone : str
     email : str
     address : str
     comments : str
-    created : dt
-    updated : dt
 
