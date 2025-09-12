@@ -15,3 +15,9 @@ class ICategory(TypedDict, total=False):
     categoryname : Required[str]
     is_deprecated : bool
 
+class IExpense(TypedDict, totla=False):
+    id : int
+    vendor_id : Required[int]
+    amount : Required[float]
+    category_id : Required[int]
+    is_recurring : bool
