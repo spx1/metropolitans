@@ -50,7 +50,7 @@ class VendorService:
     def update(id, updated_data : IVendor):
         vendor = db.session.query(Vendor).filter(Vendor.id == id).one()
         if "vendorname" in updated_data: 
-            if db.session.query(Vendor).filter(Vendor.vendorname == updated_date["vendorname"]).count() == 0
+            if db.session.query(Vendor).filter(Vendor.vendorname == updated_data["vendorname"]).count() == 0:
                 vendor.vendorname = updated_data["vendorname"]
         for field in ["contactname","contactphone","email","address","comments"]:
             if field in updated_data:
