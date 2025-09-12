@@ -1,6 +1,9 @@
 import os
-from flask import Flask, render_template
+from flask import Flask, Blueprint, render_template, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
+from service import VendorService, CategoryService, ExpenseService
+from model import Vendor, Category, Expense
+from typing import Tuple, Callable
 
 def get_database_uri() -> str:
     user = os.getenv('SQL_USER')
@@ -33,3 +36,37 @@ def display_vendor_page():
 @app.route("/page/expense")
 def display_expense_page():
     return render_template('expenses.html')
+
+api_bp = Blueprint('API', __name__)
+app.register_blueprint(api_bp, url_prefix='/api/v1')
+
+@api_bp('/vendors',method=["GET"])
+def get_vendors():
+    return [dict(t) for t in VendorService.get()]
+
+def post_generic(foo, data : dict) -> Tuple[str, int]:
+    try:
+        foo(data)
+        return jsonify({'message': 'Success'}), 200
+    except Exception as e:
+        return jsonify({'message': f"Error: {str(e)}"}), 500
+    
+@api_bp('/vendors',method=["POST"])
+def post_vendors():
+    return post_generic(VendorService.add, request.get_json())
+    
+@api_bp('/categories',method=["GET"])
+def get_categories():
+    return [dict(t) for t in CategoryService.get()]
+
+@api_bp('/categories',method=["POST"])
+def post_categories():
+    return post_generic(CategoryService.add, request.get_json())
+
+@api_bp('/expenses',method=["GET"])
+def get_expenses():
+    return [dict(t) for t in ExpenseService.get()]
+
+@api_bp('/expenses',method=["POST"])
+def post_expenses():
+    return post_generic(ExpenseService.add, request.get_json())
