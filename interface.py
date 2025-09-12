@@ -10,3 +10,8 @@ class IVendor(TypedDict, total=False):
     address : str
     comments : str
 
+class ICategory(TypedDict, total=False):
+    id : int
+    categoryname : Required[str]
+    is_deprecated : bool
+
