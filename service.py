@@ -1,5 +1,5 @@
-from model import Vendor
-from interface import IVendor
+from model import Vendor, Category, Expense
+from interface import IVendor, ICategory, IExpense
 from app import db
 from typing import List
 import datetime
@@ -65,3 +65,90 @@ class VendorService:
             db.session.commit()
         except:
             db.session.rollback()
+
+class CategoryService:
+    @staticmethod
+    def get() -> List[Category]:
+        return db.session.query(Category).all()
+    
+    @staticmethod
+    def add(data : ICategory):
+        if not data["categoryname"]:
+            raise InvalidInputException("Categoryname must not be an empty string")
+        if db.session.query(Category).filter(Category.categoryname == data["categoryname"]).count > 0:
+            raise InvalidInputException(f"A category with name '{data["categoryname"]}' already exists")
+        
+        current_time = datetime.now()
+        category = Category(
+            categoryname = data["categoryname"],
+            is_depricated = data.get("is_deprecated", False),
+            created=current_time,
+            updated=current_time
+        )
+
+        try:
+            db.session.add(category)
+            db.session.commit()
+        except:
+            db.session.rollback()
+
+    @staticmethod
+    def update(id, data : ICategory):
+        category = db.session.query(Category).filter(Category.id==id).one()
+        category.categoryname = data["categoryname"]
+        if "is_deprecated" in data:
+            category.is_deprecated = data["is_deprecated"]
+        category.updated = datetime.now()
+
+        db.session.commit()
+
+    @staticmethod
+    def delete(id):
+        category = db.session.query(Category).filter(Category.id==id).one()
+        category.is_deprecated = True
+        category.updated = datetime.now()
+
+        db.session.commit()
+
+class ExpenseService:
+    @staticmethod
+    def get():
+        return db.session.query(Expense).all()
+    
+    @staticmethod
+    def add(data : IExpense):
+        vendor = db.session.query(Vendor).filter(Vendor.id==data["vendor_id"]).one()
+        category = db.session.query(Category).filter(Category.id==data["category_id"]).one()
+
+        current_time = datetime.now()
+        expense = Expense(
+            vendor = vendor,
+            category = category,
+            created = current_time,
+            updated = current_time,
+            amount = data["amount"],
+            is_recurring = data.get("is_recurring", False)
+        )
+    
+    @staticmethod
+    def update(id, data : IExpense):
+        expense = db.session.query(Expense).filter(Expense.id==id).one()
+        vendor = db.session.query(Vendor).filter(Vendor.id==data["vendor_id"]).one()
+        category = db.session.query(Category).filter(Category.id==data["category_id"]).one()
+
+        expense.vendor = vendor
+        expense.category = category
+        expense.amount = data["amount"]
+        if "is_recurring" in data: expense.is_recurring = data["is_recurring"]
+        expense.updated = datetime.now()
+        db.session.commit()
+
+    @staticmethod
+    def delete(id):
+        expense = db.session.query(Expense).filter(Expense.id==id).one()
+        try:
+            db.session.delete(expense)
+            db.session.commit()
+        except:
+            db.session.rollback()
+
