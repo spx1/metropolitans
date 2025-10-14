@@ -4,5 +4,19 @@
 
 {% block content %}
     <h2>Vendors Page</h2>
+    <table>
+        <tr>
+            <th>Vendor</th><th>Contact</th><th>Phone #</th><th>e-Mail Address</th>
+            <th></th><th><button><i class="fas fa-plus"></i></button></th>
+        </tr>
+        {% for vendor in vendors %}
+        <tr>
+            <td>{{vendor.vendorname}}</td><td>{{vendor.contactname}}</td>
+            <td>{{vendor.contactphone}}</td><td>{{vendor.email}}</td>
+            <td><button><i class="fas fa-pencil-alt"></i></button></td>
+            <td><button><i class="fas fa-trash"></i></button></td>
+        </tr>
+        {% endfor %}
+    </table>
     <p>Welcome to the vendor page of the Expense Tracker application.</p>
 {% endblock %}
