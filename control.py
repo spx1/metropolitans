@@ -1,5 +1,5 @@
 from flask import Flask, Blueprint, render_template, jsonify, request
-import service
+from service import ExpenseService, CategoryService, VendorService
 from typing import Tuple, Callable
 
 app_bp = Blueprint('Application', __name__)
@@ -21,9 +21,9 @@ def display_vendor_page():
 def display_expense_page():
     return render_template('expenses.html')
 
-@api_bp('/vendors',method=["GET"])
+@api_bp.route('/vendors',methods=["GET"])
 def get_vendors():
-    return [dict(t) for t in service.VendorService.get()]
+    return [dict(t) for t in VendorService.get()]
 
 def post_generic(foo, data : dict) -> Tuple[str, int]:
     try:
@@ -32,22 +32,22 @@ def post_generic(foo, data : dict) -> Tuple[str, int]:
     except Exception as e:
         return jsonify({'message': f"Error: {str(e)}"}), 500
     
-@api_bp('/vendors',method=["POST"])
+@api_bp.route('/vendors',methods=["POST"])
 def post_vendors():
-    return post_generic(service.VendorService.add, request.get_json())
+    return post_generic(VendorService.add, request.get_json())
     
-@api_bp('/categories',method=["GET"])
+@api_bp.route('/categories',methods=["GET"])
 def get_categories():
-    return [dict(t) for t in service.CategoryService.get()]
+    return [dict(t) for t in CategoryService.get()]
 
-@api_bp('/categories',method=["POST"])
+@api_bp.route('/categories',methods=["POST"])
 def post_categories():
-    return post_generic(service.CategoryService.add, request.get_json())
+    return post_generic(CategoryService.add, request.get_json())
 
-@api_bp('/expenses',method=["GET"])
+@api_bp.route('/expenses',methods=["GET"])
 def get_expenses():
-    return [dict(t) for t in service.ExpenseService.get()]
+    return [dict(t) for t in ExpenseService.get()]
 
-@api_bp('/expenses',method=["POST"])
+@api_bp.route('/expenses',methods=["POST"])
 def post_expenses():
-    return post_generic(service.ExpenseService.add, request.get_json())
+    return post_generic(ExpenseService.add, request.get_json())
