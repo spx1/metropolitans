@@ -176,3 +176,6 @@ cython_debug/
 ## Metropolitan Specific
 # Ignore startup scripts
 startup.sh
+
+# Ignore VS Code
+.vscode/*
