@@ -72,4 +72,6 @@ footer {
 /* Hide the forms by default on entry */
 .popup-form-container {
     display: none;
+    border: 2px solid blue;
+    padding: 10px;
 }
