@@ -68,3 +68,8 @@ footer {
 #menu-toggle:checked + nav  {
     display: block;
 }
+
+/* Hide the forms by default on entry */
+.popup-form-container {
+    display: none;
+}
