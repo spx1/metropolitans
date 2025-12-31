@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Expense Tracker{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>Expense Tracker</h1>
+            <div class="hamburger-menu">
+                <label for="menu-toggle" class="menu-icon">&#9776;</label>
+                <input type="checkbox" id="menu-toggle" />
+                <nav>
+                    <ul class="nav-menu" id="nav-menu">
+                        <li><a href="{{ url_for('Application.display_main_page') }}">Main</a></li>
+                        <li><a href="{{ url_for('Application.display_vendor_page') }}">Vendor</a></li>
+                        <li><a href="{{ url_for('Application.display_expense_page') }}">Expense</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        <p>&copy; 2025 Expense Tracker. All rights reserved.</p>
+    </footer>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

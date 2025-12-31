@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}VendorS Page - Expense Tracker{% endblock %}
+
+{% block content %}
+    <h2>Vendors Page</h2>
+    <table>
+        <tr>
+            <th>Vendor</th><th>Contact</th><th>Phone #</th><th>e-Mail Address</th>
+            <th></th><th><button><i class="fas fa-plus" onclick="toggle_vendor_form('vendor-container')"></i></button></th>
+        </tr>
+        {% for vendor in vendors %}
+        <tr>
+            <td>{{vendor.vendorname}}</td><td>{{vendor.contactname}}</td>
+            <td>{{vendor.contactphone}}</td><td>{{vendor.email}}</td>
+            <td><button><i class="fas fa-pencil-alt"></i></button></td>
+            <td><button><i class="fas fa-trash"></i></button></td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <div class="popup-form-container" id="vendor-container">
+        <form class="form" id="vendor-form">
+            <h1>Vendor Edit</h1>
+            <input type="hidden" id="vendor_id_input">
+            <label>Name</label><input type="text" id="vendor_name_input"><br>
+            <label>Contact</label><input type="text" id="vendor_contact_input"><br>
+            <label>Phone</label><input type="tel" id="vendor_phone_input"><br>
+            <label>Email</label><input type="email" id="vendor_email_input"><br>
+            <label>Address</label><input type="text" id="vendor_address_input"><br>
+            <label>Comments</label><input type="text" id="vendor_comment_input"><br>
+            <button type="button" onclick="post_vendor_form()">Submit</button>
+            <button type="button" onclick="toggle_vendor_form('vendor-container')">Cancel</button>
+        </form>
+    </div>
+    <p>Welcome to the vendor page of the Expense Tracker application.</p>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        function validate_vendor_form() {
+            const fields = ['vendor_name_input', 'vendor_contact_input']
+            for (const field in fields) {
+                if( document.getElementById(field).value.IsEmpty() ) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function jsonify_vendor_form() {
+            var post_data = {
+                vendorname: document.getElementById('vendor_name_input').value,
+                contactname: document.getElementById('vendor_contact_input').value,
+                contactphone: document.getElementById('vendor_phone_input').value,
+                email: document.getElementById('vendor_email_input').value,
+                address: document.getElementById('vendor_address_input').value,
+                comments: document.getElementById('vendor_comments_input').value                
+            }
+            return post_data
+        }
+
+        async function post_vendor_form(){
+            if( validate_vendor_form()) {
+                payload = jsonify_vendor_form();
+                const result = await fetch("{{url_for('API.post_vendors')}}", {
+                    method: 'POST',
+                    headers: {'Content-Type':'application/json'},
+                    body: payload
+                });
+
+                if( result.ok ) {
+                    console.log("Successfully Posted");
+                    toggle_vendor_form('vendor-container')
+                }
+            }
+        }
+        
+    </script>
+{% endblock %}
+
